@@ -1,0 +1,51 @@
+,Product Name,Vendor Name,Product Type,Number of Vulnerabilities
+1,Debian Linux,Debian,OS,3067
+2,Android,Google,OS,2563
+3,Linux Kernel,Linux,OS,2357
+4,Mac Os X,Apple,OS,2212
+5,Ubuntu Linux,Canonical,OS,2007
+6,Firefox,Mozilla,Application,1873
+7,Chrome,Google,Application,1858
+8,Iphone Os,Apple,OS,1655
+9,Windows Server 2008,Microsoft,OS,1421
+10,Windows 7,Microsoft,OS,1283
+11,Acrobat Reader Dc,Adobe,Application,1182
+12,Acrobat Dc,Adobe,Application,1182
+13,Windows 10,Microsoft,OS,1111
+14,Flash Player,Adobe,Application,1078
+15,Windows Server 2012,Microsoft,OS,1050
+16,Enterprise Linux Desktop,Redhat,OS,1039
+17,Internet Explorer,Microsoft,Application,1030
+18,Safari,Apple,Application,1029
+19,Enterprise Linux Server,Redhat,OS,979
+20,Windows 8.1,Microsoft,OS,978
+21,Acrobat,Adobe,Application,949
+22,Enterprise Linux Workstation,Redhat,OS,941
+23,Thunderbird,Mozilla,Application,921
+24,Opensuse,Opensuse,OS,918
+25,Windows Server 2016,Microsoft,OS,889
+26,Windows Rt 8.1,Microsoft,OS,848
+27,Windows Vista,Microsoft,OS,831
+28,Windows Xp,Microsoft,OS,741
+29,Mysql,Oracle,Application,716
+30,Seamonkey,Mozilla,Application,698
+31,Fedora,Fedoraproject,OS,697
+32,Acrobat Reader,Adobe,Application,681
+33,Firefox Esr,Mozilla,Application,672
+34,Enterprise Linux,Redhat,OS,662
+35,Mac Os X Server,Apple,OS,640
+36,IE,Microsoft,Application,631
+37,JRE,Oracle,Application,617
+38,Edge,Microsoft,Application,615
+39,JDK,Oracle,Application,607
+40,PHP,PHP,Application,604
+41,Itunes,Apple,Application,601
+42,Leap,Opensuse,OS,595
+43,Wireshark,Wireshark,Application,576
+44,Sunos,SUN,OS,569
+45,Office,Microsoft,Application,546
+46,Imagemagick,Imagemagick,Application,545
+47,IOS,Cisco,OS,532
+48,Windows 2000,Microsoft,OS,514
+49,Watchos,Apple,OS,473
+50,Solaris,SUN,OS,465

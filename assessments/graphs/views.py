@@ -5,20 +5,36 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import pandas as pd
 
+import os 
+import pathlib
+
+
 # Create your views here.
 
 @login_required
 def logged_in(request):
 
-    df = pd.read_csv("/home/mihai/Desktop/Repos/Django-with-Highcharts/assessments/graphs/data/cars.csv")
-    rs = df.groupby("Engine size")["Sales in thousands"].agg("sum")
-    categories = list(rs.index)
-    values = list(rs.values)
+    abs_path = pathlib.Path(__file__).parent.absolute()
+    data_dir = os.path.join(abs_path,"data")
 
-    table_content = df.to_html(index=None)
-    table_content = table_content.replace("","")
-    table_content = table_content.replace('class="dataframe"',"class='table table-striped'")
-    table_content = table_content.replace('border="1"',"")
+    graphs = []
 
-    context = {"categories": categories, 'values': values, 'table_data':table_content}
+    for f in os.listdir(data_dir):
+
+        graph = {}
+        
+        file_path = os.path.join(data_dir,f)
+
+        df = pd.read_csv(file_path)
+        rs = df.groupby(df.columns[0])[df.columns[2]].agg("sum")
+        graph["categories"] = list(rs.index)
+        graph["values"] = list(rs.values)
+        graph["name_y"] = df.columns[1]
+        graph["series_name"] = df.columns[0]
+        graph["name"] = f
+
+        graphs.append(graph) 
+
+
+    context = {"graphs":graphs}
     return render(request, 'index.html', context=context)
