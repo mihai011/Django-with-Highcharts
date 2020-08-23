@@ -9,13 +9,19 @@ import os
 import pathlib
 
 
+from graphs.utils import check_create_models
+
 # Create your views here.
+
 
 @login_required
 def logged_in(request):
 
+
     abs_path = pathlib.Path(__file__).parent.absolute()
     data_dir = os.path.join(abs_path,"data")
+
+    check_create_models(data_dir)
 
     graphs = []
 
