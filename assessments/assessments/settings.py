@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import logging.config
+import os
+from django.utils.log import DEFAULT_LOGGING
 
 from pathlib import Path
 import os
@@ -123,3 +126,76 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/graphs'
+
+
+
+# Disable Django's logging setup
+LOGGING_CONFIG = None
+
+#example of custom defined loggers
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+    },
+    'handlers': {
+        # console logs to stderr
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'file_warning': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'formatter': 'default',
+            'filename': 'warning.log',
+        }, 
+        'file_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'default',
+            'filename': 'debug.log',
+        },
+        'file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'default',
+            'filename': 'error.log',
+        }   
+        
+    },
+    'loggers': {
+        # Our application code
+        'app_info': {
+            'level': "INFO",
+            'handlers': ['console'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+        'app_debug': {
+            'level': "DEBUG",
+            'handlers': ['file_debug'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+
+        'app_warning': {
+            'level': "WARNING",
+            'handlers': ['file_warning'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+
+        'app_error': {
+            'level': "ERROR",
+            'handlers': ['file_error'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+        
+    },
+})

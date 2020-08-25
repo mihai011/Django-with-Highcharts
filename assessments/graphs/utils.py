@@ -1,8 +1,14 @@
 import csv
 import os
 
+
+import logging
+logger = logging.getLogger('app_info')
+
 def check_int_float(s):
 
+    if s in ['','.']:
+        return 0
     try:
         s = float(s)
         return s
@@ -13,9 +19,13 @@ def check_int_float(s):
         return s
     except Exception:
         pass
-    if s in ['','.']:
-        return 0
+    
     return s
+
+"""
+Function for simple database population from csv files.
+"""
+
 
 def check_create_objects(data_dir, classes):
     
@@ -35,6 +45,6 @@ def check_create_objects(data_dir, classes):
 
                 obj = c(**f_dict)
                 obj.save()
-        
+    logger.info("Database populated!") 
 
             

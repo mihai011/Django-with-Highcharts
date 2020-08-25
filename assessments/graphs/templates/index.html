@@ -24,7 +24,7 @@
   </head>
   <body>
     <p><a href="{% url 'logout' %}">Logout</a></p>
-    <h1>Security assessments graphs</h1>
+    <p class="text-center h1">Security assessments graphs</p>
 
     <div class="row">
         <div class="column" style="background-color:#aaa;">
@@ -66,6 +66,15 @@
 
     <script>
         var i=0;
+        
+        let types = ['column', 'bar'];
+        var random_type = 0;
+        let colors =  ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+        
+        Highcharts.setOptions({
+        colors:colors
+            });
+            
         {% for g in graphs %}
             console.log(i);
             _categories = {{ g.categories|safe}};
@@ -73,10 +82,13 @@
             graph_name = "{{ g.name|safe }}";
             names_y = "{{ g.name_y|safe }}";
             series_name = "{{ g.series_name|safe }}";
+            random = Math.floor(Math.random() * types.length);
+            random_colors = Math.floor(Math.random() * colors.length);
+            
             
             Highcharts.chart("graph"+i, {
             chart: {
-                    type: 'column'
+                    type: types[random]
             },
             title: {
                     text: graph_name
@@ -94,14 +106,6 @@
                         text: names_y
                     }
             },
-            tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-            },
             plotOptions: {
                     column: {
                 pointPadding: 0.2,
@@ -110,7 +114,8 @@
             },
             series: [{
                     name: series_name,
-                    data: _values
+                    data: _values,
+                    color: Highcharts.getOptions().colors[random_colors]
                 
             }]
             });

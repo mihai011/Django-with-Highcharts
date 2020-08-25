@@ -20,6 +20,10 @@ import graphs.views as gviews
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 
+
+"""
+using the default django auth system.
+"""
 urlpatterns = [
     path('graphs', gviews.logged_in),
     path('admin', admin.site.urls),

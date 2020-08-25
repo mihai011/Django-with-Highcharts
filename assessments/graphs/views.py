@@ -11,15 +11,19 @@ import pathlib
 
 from graphs.utils import check_create_objects
 import graphs.models as models
+
+import logging
+logger_info = logging.getLogger("app_info")
+logger_debug = logging.getLogger("app_debug")
 # Create your views here.
 
-def login(request):
-
-    return redirect("/login")
-
-
+"""
+Main Function after logging in
+"""
 @login_required
 def logged_in(request):
+
+    logger_debug.debug("User Logged in")
 
     abs_path = pathlib.Path(__file__).parent.absolute()
     data_dir = os.path.join(abs_path,"data")
@@ -27,31 +31,13 @@ def logged_in(request):
 
     check_create_objects(data_dir, classes)
 
-    
-    # graphs = []
-    # for f in os.listdir(data_dir):
-
-    #     graph = {}
-        
-    #     file_path = os.path.join(data_dir,f)
-
-    #     df = pd.read_csv(file_path)
-    #     rs = df.groupby(df.columns[0])[df.columns[2]].agg("sum")
-    #     graph["categories"] = list(rs.index)
-    #     graph["values"] = list(rs.values)
-    #     graph["name_y"] = df.columns[1]
-    #     graph["series_name"] = df.columns[0]
-    #     graph["name"] = f
-
-    #     graphs.append(graph) 
-
     graphs = []
 
     for c in classes:
         
         graph = {}
 
-        categories, values, name_y, series_name = c.create_data()
+        categories, values, series_name, name_y = c.create_data()
 
         graph["categories"] = categories
         graph["values"] = values
@@ -63,5 +49,8 @@ def logged_in(request):
 
         c.objects.all().delete()
 
+    logger_debug.debug("Database cleaned up!")
+
     context = {"graphs":graphs}
+    logger_debug.debug("Data sent to front-end!")
     return render(request, 'index.html', context=context)

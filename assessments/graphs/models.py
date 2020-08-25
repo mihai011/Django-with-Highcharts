@@ -1,7 +1,12 @@
 from django.db import models
+import logging 
+
 import datetime 
 import calendar
+
+
 map_calendar = {v: k for k,v in enumerate(calendar.month_abbr)}
+logger = logging.getLogger("app_info")
 # Create your models here.
 
 class CarsModel(models.Model):
@@ -34,11 +39,12 @@ class CarsModel(models.Model):
         for s in categories:
             values.append(cls.objects.filter(manufacturer=s).count())
 
+        logger.info("Retrieved data from class:"+str(CarsModel))
         return list(categories), values, col_name, series_name
 
 
     def save(self, *args, **kwargs):
-        # date reformat add
+        # date reformat add for "latest-launch field"
 
         date = self.latest_launch.split("-")
         day = int(date[0])
@@ -47,6 +53,7 @@ class CarsModel(models.Model):
         self.latest_launch = datetime.date(year, month, day) 
 
         super(CarsModel, self).save(*args, **kwargs)
+        
 
 
     @staticmethod
@@ -75,6 +82,7 @@ class CVSSVendor(models.Model):
         for s in categories:
             values.append(sum([s.nr_total_vuln for s in cls.objects.filter(vendor=s)]))
 
+        logger.info("Retrieved data from class:"+str(CVSSVendor))
         return list(categories), values, col_name, series_name
 
     @staticmethod
@@ -104,6 +112,7 @@ class CVSSProduct(models.Model):
         for s in categories:
             values.append(sum([s.nr_total_vuln for s in cls.objects.filter(product=s)]))
 
+        logger.info("Retrieved data from class:"+str(CVSSProduct))
         return list(categories), values, col_name, series_name
 
 
@@ -133,6 +142,7 @@ class ProductTop(models.Model):
         for s in categories:
             values.append(sum([s.nr_total_vuln for s in cls.objects.filter(product=s)]))
 
+        logger.info("Retrieved data from class:"+str(ProductTop))
         return list(categories), values, col_name, series_name
     
     @staticmethod
@@ -160,6 +170,7 @@ class VendorTop(models.Model):
         for s in categories:
             values.append(sum([s.nr_total_vuln for s in cls.objects.filter(vendor=s)]))
 
+        logger.info("Retrieved data from class:"+str(VendorTop))
         return list(categories), values, col_name, series_name
 
 
@@ -167,5 +178,46 @@ class VendorTop(models.Model):
     def source():
 
         return 'Top 50 Vendors By Total Number Of Distinct Vulnerabilities .csv'
+
+class VulnTrends(models.Model):
+
+    year = models.SmallIntegerField()
+    nr_vuln = models.SmallIntegerField()
+    dos = models.SmallIntegerField()
+    code_exec = models.SmallIntegerField()
+    overflow = models.SmallIntegerField()
+    memory_cor = models.SmallIntegerField()
+    sql_injection = models.SmallIntegerField()
+    xss = models.SmallIntegerField()
+    Directory = models.SmallIntegerField()
+    http_resp = models.SmallIntegerField()
+    bypass = models.SmallIntegerField()
+    gain_info = models.SmallIntegerField()
+    gain_priv = models.SmallIntegerField()
+    csrf = models.SmallIntegerField()
+    exploits = models.SmallIntegerField()
+
+
+    @classmethod
+    def create_data(cls):
+
+        col_name = "year"
+        series_name = "total vulnerabilities"
+
+        categories = set([f[col_name] for f in list(cls.objects.values(col_name))])
+
+        # get number of vulnerabilities for each vendor
+        values = []
+        for s in categories:
+            values.append(sum([s.nr_vuln for s in cls.objects.filter(year=s)]))
+
+        logger.info("Retrieved data from class:"+str(VulnTrends))
+        return list(categories), values, col_name, series_name
+
+
+    @staticmethod
+    def source():
+
+        return "Vulnerability Trends Over Time .csv"
 
 
